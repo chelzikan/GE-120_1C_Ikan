@@ -2,7 +2,7 @@
 
 Exercise #1
 
-"""#eee
+"""
 
 # Hello! For this exercise, we want to make codes that can convert decimal degrees to degree-minute-seconds and vice versa. 
 
