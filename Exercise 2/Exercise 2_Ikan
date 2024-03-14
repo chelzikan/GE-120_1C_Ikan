@@ -1,0 +1,92 @@
+"""
+Exercise 3
+"""
+
+# Hello! Welcome to my Exercise 3. For this activity, we want to execute various control structures that we learned from the previous lessons.
+# We will start this exercise by putting a counter for our line numbers. 
+
+counter = 1 
+lines = []
+
+# These lines mark the start of our sentinel-controlled loop, which will allow us to input our data. 
+
+while True:
+    print()
+    print("Line {}-{}".format(counter, counter + 1))  
+
+# Next, these lines check if the data we entered are valid. 
+    
+    invalid_input = False
+    while not (invalid_input):
+        distance = input("Distance: ")
+        if invalid_input:
+            print ("Invalid Input")
+            continue
+        if not (invalid_input):
+            break
+
+    azimuth = input("Azimuth from the South: ")
+
+# We want our Azimuth to be in decimal format. If someone did input the Azimuth in DMS, we can convert it using these: 
+    
+    if "-" in azimuth:
+        degrees, minutes, seconds = map(int, azimuth.split("-"))
+        azimuth_decimal = degrees + (minutes / 60) + (seconds / 3600)
+    else:
+        azimuth_decimal = float(azimuth) % 360
+
+# Next, we convert our Azimuth in DMS from its decimal value since we want it to appear that way in our table. 
+        
+    degrees_int = int(azimuth_decimal)
+    minutes_float = (azimuth_decimal - degrees_int) * 60
+    minutes_int = int(minutes_float)
+    seconds_float = (minutes_float - minutes_int) * 60
+
+# The next lines help us determine the bearing of our lines based on the quadrant they are in. The {: >2} part indicates that we want our degrees and mins part to have a maximum of 2 characters only. 
+    
+    if azimuth_decimal > 0 and azimuth_decimal < 90:
+        bearing = 'S {: >2}° {: >2}\' {:.2f}" W'.format(degrees_int, minutes_int, seconds_float)
+    elif azimuth_decimal > 90 and azimuth_decimal < 180:
+        bearing = 'N {: >2}° {: >2}\' {:.2f}" W'.format(int(180 - azimuth_decimal), int(((180 - azimuth_decimal) % 1) * 60), int((((180 - azimuth_decimal) % 1) * 60) % 1 * 60))
+    elif azimuth_decimal > 180 and azimuth_decimal < 270:
+        bearing = 'N {: >2}° {: >2}\' {:.2f}" E'.format(int(azimuth_decimal - 180), int(((azimuth_decimal - 180) % 1) * 60), int((((azimuth_decimal - 180) % 1) * 60) % 1 * 60))
+    elif azimuth_decimal > 270 and azimuth_decimal < 360:
+        bearing = 'S {: >2}° {: >2}\' {:.2f}" E'.format(int(360 - azimuth_decimal), int(((360 - azimuth_decimal) % 1) * 60), int((((360 - azimuth_decimal) % 1) * 60) % 1 * 60))
+    elif azimuth_decimal == 0:
+        bearing = "DUE SOUTH"
+    elif azimuth_decimal == 360:
+        bearing = "DUE SOUTH"
+    elif azimuth_decimal == 90:
+        bearing = "DUE WEST"
+    elif azimuth_decimal == 180:
+        bearing = "DUE NORTH"
+    elif azimuth_decimal == 270:
+        bearing = "DUE EAST"
+    else:
+        bearing = "INVALID"
+
+
+# We create a tuple to represent the line and append it to the lines list [which we already have input in the first part of this ex.].
+    
+    line = ('{}-{}'.format(counter, counter + 1), '{:.3f}'.format(float(distance)), bearing)
+    lines.append(line)
+
+# The following lines ask us if we want to add a new line. 
+   
+    yn = input("Add new line? (y/n): ")
+    if yn.lower() == "yes" or yn.lower() == "y":
+        counter += 1
+        continue
+    else:
+        break
+
+# Lastly, we print the header of the table and the information along it. 
+
+print("\n\n")
+print('{: ^10} {: ^10} {: ^25}'.format("LINE", "DISTANCE", "BEARING"))
+
+
+for line in lines:
+    print('{: ^10} {: ^10} {: ^25}'.format(line[0], line[1], line[2])) 
+
+print("- - - - - - - - - - - END - - - - - - - - - -  ")
